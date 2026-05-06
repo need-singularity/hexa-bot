@@ -1,4 +1,4 @@
-# hexa-bot 🤖 — Robot substrate (HEXA family)
+# 🤖 hexa-bot — Robot substrate (HEXA family)
 
 > 4-verb robot substrate organized around the **n=6 invariant lattice**:
 > ROBOTICS / TRANSPORT / AUTOMATION / DOG_ROBOT. Spec-first extraction
