@@ -1,3 +1,6 @@
+<!-- @canonical: n6-architecture@0570a835:domains/life/dog-robot-test/dog-robot-test.md -->
+<!-- @extracted: 2026-05-06 -->
+<!-- @md5_at_extraction: c647a764335a411ace6682bed86daa5a -->
 <!-- gold-standard: shared/harness/sample.md -->
 <!-- @doc(type=paper) -->
 ---

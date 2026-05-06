@@ -1,3 +1,6 @@
+<!-- @canonical: n6-architecture@0570a835:domains/infra/robotics/robotics.md -->
+<!-- @extracted: 2026-05-06 -->
+<!-- @md5_at_extraction: 060c43d3ef79f4b50164118a999d26f4 -->
 <!-- gold-standard: shared/harness/sample.md -->
 ---
 domain: robotics

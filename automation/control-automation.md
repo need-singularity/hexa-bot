@@ -1,3 +1,6 @@
+<!-- @canonical: n6-architecture@0570a835:domains/infra/control-automation/control-automation.md -->
+<!-- @extracted: 2026-05-06 -->
+<!-- @md5_at_extraction: 636a812ad92d3c89cd669be594fbecbb -->
 <!-- gold-standard: shared/harness/sample.md -->
 ---
 domain: control-automation

@@ -1,3 +1,6 @@
+<!-- @canonical: n6-architecture@0570a835:domains/infra/robotics-transport/robotics-transport.md -->
+<!-- @extracted: 2026-05-06 -->
+<!-- @md5_at_extraction: 8080c89fa1598c781920c97d21922de7 -->
 <!-- gold-standard: shared/harness/sample.md -->
 ---
 domain: robotics-transport
