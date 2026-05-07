@@ -25,7 +25,7 @@
 // @no-lock-needed
 // @resolver-bypass(reason="Pure local CLI router; spec-only verbs.")
 
-let VERSION = "1.0.0"
+let VERSION = "1.1.0"
 
 // ─── env / path resolve ───
 
@@ -186,6 +186,99 @@ fn cmd_dog_robot(a: [str]) {
     _audit("dog_robot", "", 0)
 }
 
+// ─── subcommand: verify ─── (delegates to verify/cli.py)
+
+fn cmd_verify(a: [str]) {
+    let py_cli = HB + "/verify/cli.py"
+    if _file_exists(py_cli) == false {
+        eprintln("hexa-bot verify: missing " + py_cli)
+        eprintln("  (verify/ scaffold lands in v1.1.0; run from the repo root)")
+        _audit("verify", "", 2)
+        exit(2)
+    }
+    let json_flag = if json_mode(a) { " --json" } else { "" }
+    let cmd = "/usr/bin/env python3 " + shq(py_cli) + json_flag
+    let rc_str = exec(cmd + " 2>&1; echo __HX_RC=$?")
+    print(rc_str)
+    let m = rc_str.find("__HX_RC=")
+    let rc = if m >= 0 { 0 } else { 1 }
+    _audit("verify", json_flag, rc)
+}
+
+// ─── subcommand: build ─── (delegates to make -C build all)
+
+fn cmd_build(a: [str]) {
+    let bdir = HB + "/build"
+    let bok = exec("[ -d " + shq(bdir) + " ] && echo y || echo n").trim()
+    if bok != "y" {
+        eprintln("hexa-bot build: missing " + bdir)
+        _audit("build", "", 2)
+        exit(2)
+    }
+    println("hexa-bot build — pandoc PDF rebuild (4 verb specs)")
+    let cmd = "make -C " + shq(bdir) + " all 2>&1"
+    let out = exec(cmd)
+    print(out)
+    _audit("build", "", 0)
+}
+
+// ─── subcommand: sim ─── (delegates to module/firmware/sim)
+
+fn cmd_sim(a: [str]) {
+    let sim_dir = HB + "/module/firmware/sim"
+    let bin_path = sim_dir + "/build/dog_sim"
+    let bin_ok = exec("[ -x " + shq(bin_path) + " ] && echo y || echo n").trim()
+    if bin_ok != "y" {
+        println("hexa-bot sim: dog_sim not built — running `make` first")
+        let _ = exec("make -C " + shq(sim_dir) + " all 2>&1")
+    }
+    let bin_now = exec("[ -x " + shq(bin_path) + " ] && echo y || echo n").trim()
+    if bin_now != "y" {
+        eprintln("hexa-bot sim: build FAILED")
+        _audit("sim", "", 1)
+        exit(1)
+    }
+    let extra = if has_flag(a, "--selftest") { " --selftest" }
+                else if has_flag(a, "--json") { " --gait=trot --json" }
+                else { " --gait=trot --ms=1600" }
+    let cmd = shq(bin_path) + extra + " 2>&1"
+    let out = exec(cmd)
+    print(out)
+    _audit("sim", extra, 0)
+}
+
+// ─── subcommand: firmware ─── (delegates to module/firmware/Makefile)
+
+fn cmd_firmware(a: [str]) {
+    let fw = HB + "/module/firmware"
+    let mkok = exec("[ -f " + shq(fw + "/Makefile") + " ] && echo y || echo n").trim()
+    if mkok != "y" {
+        eprintln("hexa-bot firmware: missing module/firmware/Makefile")
+        _audit("firmware", "", 2)
+        exit(2)
+    }
+    println("hexa-bot firmware — STM32F429 cross-compile")
+    let cmd = "make -C " + shq(fw) + " check && make -C " + shq(fw) + " all 2>&1"
+    let out = exec(cmd)
+    print(out)
+    _audit("firmware", "", 0)
+}
+
+// ─── subcommand: n6 ─── (n=6 lattice arithmetic)
+
+fn cmd_n6(a: [str]) {
+    let py = HB + "/verify/n6_arithmetic.py"
+    if _file_exists(py) == false {
+        eprintln("hexa-bot n6: missing " + py)
+        _audit("n6", "", 2)
+        exit(2)
+    }
+    let json_flag = if json_mode(a) { " --json" } else { "" }
+    let out = exec("/usr/bin/env python3 " + shq(py) + json_flag + " 2>&1")
+    print(out)
+    _audit("n6", json_flag, 0)
+}
+
 // ─── subcommand: selftest ───
 
 fn cmd_selftest(a: [str]) {
@@ -239,6 +332,13 @@ fn cmd_help() {
     println("utility subcommands:")
     println("  status          0/4-wired verb table + verdict + caveats")
     println("  selftest        4-verb spec presence sweep")
+    println("")
+    println("runnable surface (v1.1.0+):")
+    println("  verify          run verify/cli.py — n=6 + verbs + cross-doc + roadmap")
+    println("  build           pandoc PDF rebuild for 4 verb specs")
+    println("  sim             host-side dog_robot firmware simulator (--selftest|--json)")
+    println("  firmware        STM32F429 ARM cross-compile of dog_robot reference")
+    println("  n6              n=6 lattice arithmetic (σ·φ = n·τ = J₂ = 24)")
     println("")
     println("global flags:")
     println("  --version       show version")
@@ -305,6 +405,16 @@ fn main() {
         cmd_dog_robot(a)
     } else if sub == "selftest" {
         cmd_selftest(a)
+    } else if sub == "verify" {
+        cmd_verify(a)
+    } else if sub == "build" {
+        cmd_build(a)
+    } else if sub == "sim" {
+        cmd_sim(a)
+    } else if sub == "firmware" {
+        cmd_firmware(a)
+    } else if sub == "n6" {
+        cmd_n6(a)
     } else {
         eprintln("hexa-bot: unknown subcommand '" + sub + "'")
         eprintln("run 'hexa-bot help' for usage")

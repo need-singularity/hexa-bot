@@ -1,0 +1,98 @@
+name: hexa-bot CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify-and-test:
+    name: verify + sim + tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pytest
+        run: pip install --quiet pytest
+
+      - name: verify/cli.py all (n=6 + verbs + audit + roadmap + firmware-sync)
+        run: python3 verify/cli.py
+
+      - name: build host simulator + run selftest
+        run: make -C module/firmware/sim selftest
+
+      - name: build all-gaits (JSON summary)
+        run: make -C module/firmware/sim all-gaits
+
+      - name: firmware unit tests (8 tests)
+        run: make -C module/firmware/test run
+
+      - name: pytest acceptance ladder (A-1 .. A-10)
+        run: pytest tests/ -v -m auto
+
+  firmware-arm-build:
+    name: ARM cross-compile (dog_robot reference firmware)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install arm-none-eabi-gcc
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: make check + all
+        run: |
+          make -C module/firmware check
+          make -C module/firmware all
+          make -C module/firmware size
+
+      - name: Upload firmware.elf artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dog_robot-firmware-${{ github.sha }}
+          path: |
+            module/firmware/build/firmware.elf
+            module/firmware/build/firmware.bin
+            module/firmware/build/firmware.hex
+            module/firmware/build/firmware.map
+          if-no-files-found: error
+          retention-days: 14
+
+  pdf-build:
+    name: pandoc PDF rebuild (4 verb specs)
+    runs-on: ubuntu-latest
+    continue-on-error: true   # PDFs are nice-to-have for CI, not gating
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pandoc + xelatex (no-CJK font on CI)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y pandoc texlive-xetex texlive-luatex \
+              texlive-fonts-recommended texlive-fonts-extra
+
+      - name: build PDFs (with relaxed font preamble)
+        run: |
+          # CI Linux box has no Apple SD Gothic Neo; swap to Noto CJK.
+          sed -i.bak 's|Apple SD Gothic Neo|Noto Sans CJK KR|g' build/header.tex
+          make -C build all || true
+          ls -la build/out/
+
+      - name: Upload PDFs (best-effort)
+        uses: actions/upload-artifact@v4
+        with:
+          name: hexa-bot-pdfs-${{ github.sha }}
+          path: build/out/*.pdf
+          if-no-files-found: warn
+          retention-days: 14

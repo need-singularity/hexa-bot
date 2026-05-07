@@ -1,0 +1,28 @@
+# build artifacts
+build/out/
+*.pdf
+
+# firmware build artifacts
+module/firmware/build/
+module/firmware/sim/build/
+module/firmware/test/build/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# editor / OS
+.DS_Store
+*.swp
+*~
+
+# hexa runtime state (logs + install/run markers)
+state/hexa_bot_cli.log
+state/markers/

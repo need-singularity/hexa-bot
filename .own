@@ -1,0 +1,119 @@
+# ---
+# schema_version: project/own/v1
+# last_updated: 2026-05-07
+# mk: 2
+# ---
+#
+# # hexa-bot/.own (mk2)
+#
+# Schema authority: hive/spec/schema/own_v1.schema.yaml
+# Format: mk2 frontmatter (#-prefixed YAML) + comment-section markdown headers
+# + mk1 raw-format body (`own N <status> "name"` blocks). raw_loader.hexa
+# silently skips all `#`-prefixed lines so the body parses unchanged.
+# Authoritative rule content remains in `own N <status> ...` blocks below.
+#
+# This file is the project-local SSOT for hexa-bot — the 4-verb robot substrate
+# extracted from n6-architecture@c0f1f570 (2026-05-06) and extended at v1.1.0
+# (2026-05-07) with the runnable surface (verify/ + build/ + tests/ +
+# module/firmware/ + module/firmware/sim/ + module/firmware/test/).
+#
+# Pattern source: hexa-sscb/.own (mk2 own_v1) — adapted for the 4-verb
+# robot decomposition. Uses the same hive raw.mk2 arch.001 architecture
+# (core/<feature>/ + module/<feature>/ + cli/ triplet).
+#
+# ## roles
+# - dancinlife (project owner)
+# - claude opus / sonnet / haiku (AI agents — autonomous within own baselines)
+#
+# ## baselines
+# - n6-architecture canonical SSOT — extraction consumer
+# - 4 verb directory names (robotics/, transport/, automation/, dog_robot/)
+#   preserved post-rename — must stay 1:1 with hexa.toml [modules].spec
+# - doc-first repo with thin runnable surface
+# - .roadmap.hexa_bot §A.1 = SSOT for n=6 lattice numerics
+#
+# ## project_directives
+# - n=6 master identity invariant: σ(6)=12, τ(6)=4, φ(6)=2, J₂=24,
+#   σ·φ = n·τ = J₂ = 24 — never changed without restating the lattice
+#   equality (own 1)
+# - 4-verb stack contractual: robotics / transport / automation / dog_robot —
+#   never silently substitute or rename (own 2)
+# - code permitted in cli/, verify/, build/, tests/, module/firmware/ —
+#   new code locations require README.md "Module inventory" + this own
+#   entry decl update before the implementing PR (own 3)
+# - .roadmap.hexa_bot §A.1 = SSOT for n=6 numerics. README/CHANGELOG/
+#   RELEASE_NOTES/hexa.toml derive; verify/cross_doc_audit.py auto-checks
+#   alignment.
+# - additive-only at doc layer — additions OK, renames/moves require
+#   .roadmap.hexa_bot §A.3 cycle history note + redirect.
+#
+# ## cross_link_to_specs
+# - hive/spec/schema/own_v1.schema.yaml — THIS schema authority
+# - hive/spec/ai_native_module_architecture.spec.yaml — core+module+cli triplet
+# - hive raw.mk2 arch.001 — collapsed pattern (this repo's structural baseline)
+#
+# ## cross_link_to_raws
+# - raw 9 (hexa-only orchestration) — cli/hexa-bot.hexa is the canonical entry
+# - raw 10 (honest C3 disclosure) — README §Status carries verb-wired ratio honestly
+# - raw 11 (snake_case) — verb dirs use snake_case (dog_robot, not dog-robot)
+# - raw 15 (write-confined) — install.hexa logs to state/, never to verb dirs
+# - raw 91 (honest C3 disclosure) — process-quality, applies to scope claims
+# - raw 270/271/272/273 (core+module 4-rule cluster) — core/<verb>/ + module/<verb>/
+#   + cli/ triplet pattern
+#
+# ## recent_strengthenings
+# - 2026-05-06: v1.0.0 initial extraction from n6-architecture@c0f1f570.
+# - 2026-05-07: v1.1.0 runnable surface lands. own 1/2/3 promoted —
+#   n=6 master identity, 4-verb stack contractual, doc-first scope guard
+#   with 5 code-permitted directories (cli/ existed pre-1.1; verify/, build/,
+#   tests/, module/firmware/ added). Pattern referenced from hexa-sscb/.own.
+
+# hexa-bot/.own — project-local SSOT layer
+# 포맷: raw-format (.raw 와 동일 파서). 자세한 스펙: hive/self/raw_loader.hexa
+
+own 1 new "hexa-bot-n6-master-identity — n=6 격자 4 식별자가 모든 surface 에서 일치"
+  slug hexa-bot-n6-master-identity
+  scope hexa-bot 전체 — robotics/, transport/, automation/, dog_robot/, cli/, verify/, build/, tests/, module/firmware/, README.md, CHANGELOG.md, RELEASE_NOTES_v*.md, .roadmap.hexa_bot, hexa.toml.
+  enforce raw:os-lock
+  enforce-layer hard
+  enforce-layer-rationale 격자 식별자는 verify/cross_doc_audit.py 가 자동 검증 (n=6, σ=12, τ=4, φ=2, J₂=24 모든 등장 위치 일관). 위반 시 비-0 exit + 어긋난 doc 출력. 본 own 은 그 verifier 의 SSOT.
+  decl n ≡ 6 (peripheral reality substrate 식별자)
+  decl σ(6) ≡ 12 (12 joint poses / 12 sensor modalities — module/firmware/include/dog_robot.h DOG_JOINTS_TOTAL)
+  decl τ(6) ≡ 4 (4 gait cycle phases — stance/swing/push/land — module/firmware/include/dog_robot.h GAIT_PHASES)
+  decl φ(6) ≡ 2 (sensed / actuated)
+  decl J₂ ≡ 24 (Mathieu/Leech-2 closing identity; σ·φ = n·τ = J₂)
+  why n=6 격자는 디자인 모티프가 아니라 falsification budget. 격자 식별자가 어긋나면 paper / engineering pack / impact ladder 의 모든 숫자 신뢰성이 무너짐.
+  note 격자 식별자 SSOT = .roadmap.hexa_bot §A.1. README/CHANGELOG/hexa.toml 가 어긋나면 .roadmap 이 이긴다. 문서 수정 시 .roadmap 부터 갱신 → 다른 문서 → 마지막에 verify/n6_arithmetic.py 의 LATTICE dict 갱신.
+  promoted-at 2026-05-06
+  strengthened-at 2026-05-07
+
+own 2 new "hexa-bot-4-verb-stack-contractual — 4 verb (robotics/transport/automation/dog_robot) 계약적, silent substitute 금지"
+  slug hexa-bot-4-verb-stack-contractual
+  scope hexa.toml [modules].spec, README.md "Verbs" 표, CHANGELOG.md, RELEASE_NOTES_v*.md, cli/hexa-bot.hexa subcommand 라우팅, tests/ verb-presence 검증.
+  enforce raw:os-lock
+  enforce-layer hard
+  enforce-layer-rationale 4-verb 명단은 verify/verb_presence.py + verify/cross_doc_audit.py 가 자동 검증. 임의 verb 추가/삭제 시 둘 다 비-0 exit. τ(6)=4 격자 (own 1) 와 1:1 결합 — 5 번째 verb 추가는 격자 위반.
+  decl 첫 번째 verb: robotics (manipulation / arm / actuator) — robotics/robotics.md
+  decl 두 번째 verb: transport (ground+aerial + logistics) — transport/robotics-transport.md
+  decl 세 번째 verb: automation (control-automation + factory-line) — automation/control-automation.md
+  decl 네 번째 verb: dog_robot (quadruped τ(6)=4 gait) — dog_robot/dog-robot-test.md
+  decl substitute 허용 조건: 없음. verb 명 변경은 격자 위반 (raw 20 own-monotonic; slug 변경은 strengthen 만 허용).
+  why "4-verb robot substrate (HEXA family)" 약속은 4 개 verb 위에서만 의미. 추가 verb 는 hexa-mobility (motorcycle + drone + autonomous-vehicle) 처럼 별 standalone 으로.
+  note motorcycle / drone / autonomous-vehicle 은 의도적으로 OUT-OF-SCOPE — 후속 hexa-mobility standalone 후보 (자율 이동체 axis).
+  promoted-at 2026-05-06
+
+own 3 new "hexa-bot-doc-first-code-scope — 코드는 cli/ verify/ build/ tests/ module/firmware/ 5 위치에서만 허용"
+  slug hexa-bot-doc-first-code-scope
+  scope hexa-bot repo 전체. 모든 *.py / *.c / *.h / *.S / *.s / *.hexa / Makefile / *.tex / pyproject.toml 등 코드성 파일.
+  enforce raw:os-lock
+  enforce-layer hard
+  enforce-layer-rationale 5 위치 외에 코드 추가 시 verify/cross_doc_audit.py 의 'rogue code' 체크 (firmware-sync.py 와 동등) 가 차단. doc-first 정체성은 hive raw.mk2 arch.001 의 core/<feature>/ + module/<feature>/ + cli/ 패턴 핵심.
+  decl 허용 위치 1: cli/ — top-level .hexa dispatcher (cli/hexa-bot.hexa)
+  decl 허용 위치 2: verify/ — runnable invariant audit (Python stdlib only)
+  decl 허용 위치 3: build/ — pandoc PDF rebuild (Makefile + LaTeX template)
+  decl 허용 위치 4: tests/ — pytest acceptance scaffold + .hexa selftest
+  decl 허용 위치 5: module/firmware/ — STM32F4 reference + sim + test (CMSIS-only; host cross-compile)
+  decl 새 코드 위치 추가 절차: README.md "Module inventory" 표 + 본 own entry decl 5 위치 갱신을 코드 PR 보다 먼저 land. 각 verb 의 working .hexa numerical sandbox 는 module/<verb>/ 아래에 추가 가능 (post-v1.0 cycles).
+  decl 면제: doc/ 내부의 lineage / archive 경로는 코드 아님 (.md 만). LICENSE / README*.md / .gitignore / .own / hexa.toml / install.hexa / .roadmap.hexa_bot / 본 own 에 명시된 5 위치는 면제 자동.
+  why doc-first 는 작자 정책. 5 도메인 (cli/verify/build/tests/firmware) 는 "spec 자동 검증" + "PDF 복원" + "ACCEPTANCE checklist 자동화" + "STM32 reference 펌웨어" + "host sim" 5 가지 명확한 목적. 다른 위치에 코드가 들어오면 spec drift 위험.
+  promoted-at 2026-05-07
