@@ -5,6 +5,7 @@
 > from `canon@c0f1f570` (2026-05-06). Working `.hexa` CLI
 > dispatcher is a placeholder; all 4 verbs ship as spec corpus at v1.0.0.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20102589.svg)](https://doi.org/10.5281/zenodo.20102589)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.1.0-informational.svg)](CHANGELOG.md)
 [![Verbs: 1/4 wired](https://img.shields.io/badge/verbs-1%2F4_wired_(dog__robot_firmware)-yellow.svg)](#verbs)
