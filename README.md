@@ -153,34 +153,28 @@ hexa run cli/hexa-bot.hexa robotics      # spec head
 
 ## Install
 
-### Via git clone (works today)
-
 ```bash
-git clone https://github.com/dancinlab/hexa-bot.git ~/.hexa-bot
-export HEXA_BOT_ROOT=~/.hexa-bot
-export PATH="$HEXA_BOT_ROOT/cli:$PATH"
+# 1. Install hexa-lang (gives you `hexa` + `hx` package manager)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dancinlab/hexa-lang/main/install.sh)"
 
-# Run any subcommand (placeholder dispatcher):
-hexa run $HEXA_BOT_ROOT/cli/hexa-bot.hexa selftest
-hexa run $HEXA_BOT_ROOT/cli/hexa-bot.hexa status
-hexa run $HEXA_BOT_ROOT/cli/hexa-bot.hexa robotics
+# 2. Install hexa-bot
+hx install hexa-bot
 ```
 
-### Via `hx` (when registry entry lands)
+## Run
 
 ```bash
-hx install hexa-bot          # global, pulls latest from registry
-hx install hexa-bot@1.0.0    # pin specific version
-hexa-bot --version           # → 1.0.0
-```
-
-### Read the spec corpus directly
-
-```bash
-$EDITOR ~/.hexa-bot/robotics/robotics.md
-$EDITOR ~/.hexa-bot/transport/robotics-transport.md
-$EDITOR ~/.hexa-bot/automation/control-automation.md
-$EDITOR ~/.hexa-bot/dog_robot/dog-robot-test.md
+hexa-bot robotics      # manipulation / arm / actuator               [SPEC]
+hexa-bot transport     # ground+aerial transport + logistics         [SPEC]
+hexa-bot automation    # control-automation + factory-line           [SPEC]
+hexa-bot dog_robot     # quadruped test rig + locomotion             [SPEC]
+hexa-bot status        # 0/4-wired verb table + verdict + caveats
+hexa-bot selftest      # 4-verb spec presence sweep
+hexa-bot verify        # run verify/cli.py — n=6 + verbs + cross-doc + roadmap
+hexa-bot build         # pandoc PDF rebuild for 4 verb specs
+hexa-bot sim           # host-side dog_robot firmware simulator
+hexa-bot firmware      # STM32F429 ARM cross-compile of dog_robot reference
+hexa-bot n6            # n=6 lattice arithmetic (σ·φ = n·τ = J₂ = 24)
 ```
 
 ---
