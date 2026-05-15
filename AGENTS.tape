@@ -46,7 +46,7 @@
 @I id001 := "hexa-bot" :: identity-claim [d=2026-05-14 active]
   kind = "HEXA-Bot family — robotics"
   brief = "HEXA-Bot family · robotics"
-  parent = "dancinlab/echoes"
+  parent = "dancinlab"
 
 @L l1 := "repo-layout" :: structure [active]
   .roadmap.hexa_bot -> "file"
